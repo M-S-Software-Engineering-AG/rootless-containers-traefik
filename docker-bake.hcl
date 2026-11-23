@@ -17,9 +17,9 @@ variable "CROWDSEC_PLUGIN_VERSION" {
   default = "v1.8.2"
 }
 
-# renovate: datasource=github-releases depName=M-S-Software-Engineering-AG/envelope
-variable "ENVELOPE_VERSION" {
-  default = "v1.1.2"
+# renovate: datasource=github-releases depName=M-S-Software-Engineering-AG/env2yml
+variable "ENV2YML_VERSION" {
+  default = "v1.2.3"
 }
 
 # renovate: datasource=github-releases depName=M-S-Software-Engineering-AG/container-healthcheck
@@ -43,7 +43,7 @@ target "traefik" {
     TRAEFIK_VERSION         = TRAEFIK_VERSION
     SUPERVISOR_VERSION      = SUPERVISOR_VERSION
     CROWDSEC_PLUGIN_VERSION = CROWDSEC_PLUGIN_VERSION
-    ENVELOPE_VERSION        = ENVELOPE_VERSION
+    ENV2YML_VERSION         = ENV2YML_VERSION
     HEALTHCHECK_VERSION     = HEALTHCHECK_VERSION
   }
   tags       = [

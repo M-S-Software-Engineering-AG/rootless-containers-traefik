@@ -49,7 +49,7 @@ A static configuration file is `TRAEFIK_CONFIGFILE`, not `--configFile`.
 | certwatcher | `certwatcher/` in this repo | built from source with the image |
 | access-log-exporter | `access-log-exporter/` in this repo | built from source with the image |
 | crowdsec-bouncer plugin | [maxlerebourg/crowdsec-bouncer-traefik-plugin](https://github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin) | `CROWDSEC_PLUGIN_VERSION` |
-| envelope | [envelope](https://github.com/M-S-Software-Engineering-AG/envelope) | `ENVELOPE_VERSION` — renders dynamic config from env, [off by default](#generating-dynamic-config-from-env-vars) |
+| env2yml | [env2yml](https://github.com/M-S-Software-Engineering-AG/env2yml) | `ENV2YML_VERSION` — renders dynamic config from env, [off by default](#generating-dynamic-config-from-env-vars) |
 
 ## Usage
 
@@ -468,7 +468,7 @@ Point the plugin at it to serve it to blocked clients:
 ### Generating dynamic config from env vars
 
 When mounting a dynamic config file is awkward, `supervisor.yml` ships a `config`
-process that runs [`envelope`](https://github.com/M-S-Software-Engineering-AG/envelope) to build
+process that runs [`env2yml`](https://github.com/M-S-Software-Engineering-AG/env2yml) to build
 `/home/nonroot/config/dynamic/config.yml` from `TRAEFIKCONFIG_`-prefixed
 variables before Traefik starts. It is **disabled by default**; enable it, point
 the file provider at the dynamic directory, and set the values:
@@ -498,7 +498,7 @@ tls:
         - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 ```
 
-envelope's rules: `__` becomes nesting, a numeric segment becomes a list index
+env2yml's rules: `__` becomes nesting, a numeric segment becomes a list index
 (`…cipherSuites__0`), and the key is taken **verbatim** — write the Traefik keys
 in their own case under the uppercase `TRAEFIKCONFIG_` prefix. It writes the file
 directly (`-out`), and `traefik` `depends_on` it `exit: any`, so when enabled
