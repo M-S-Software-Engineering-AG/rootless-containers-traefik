@@ -1,0 +1,10 @@
+*
+!certs.tmpl
+!crowdsec-ban-page.html
+!supervisor.yml
+!go.mod
+!certwatcher
+!certwatcher/**
+!access-log-exporter
+!access-log-exporter/**
+**/.claude

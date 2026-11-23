@@ -1,0 +1,27 @@
+processes:
+  config:
+    path: /home/nonroot/envelope
+    arguments: ["-prefix", "TRAEFIKCONFIG_", "-out", "/home/nonroot/config/dynamic/config.yml"]
+    type: one_shot
+    enabled: false
+  traefik:
+    path: /home/nonroot/traefik
+    type: service
+    depends_on:
+      config:
+        exit: success
+        ignore_exit_when_disabled: true
+  certwatcher:
+    path: /home/nonroot/certwatcher
+    type: ticker
+    ticker: "@every 5s"
+    run_at_start: true
+    enabled: false
+    loglevel: warn
+  accesslog:
+    path: /home/nonroot/access-log-exporter
+    type: ticker
+    ticker: "@every 5s"
+    enabled: false
+    on_failure: continue
+    loglevel: warn

@@ -1,0 +1,20 @@
+name: Renovate
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+      timezone: 'Europe/Zurich'
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # Merge Renovate PRs as soon as CI is green instead of waiting for the next schedule
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  renovate:
+    uses: M-S-Software-Engineering-AG/ci-workflows/.github/workflows/go-renovate.yml@main
+    secrets: inherit

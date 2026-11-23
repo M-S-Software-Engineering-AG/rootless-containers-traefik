@@ -1,0 +1,15 @@
+name: Daily scan
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+      timezone: Europe/Zurich
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  scan:
+    uses: M-S-Software-Engineering-AG/ci-workflows/.github/workflows/image-daily-scan.yml@main

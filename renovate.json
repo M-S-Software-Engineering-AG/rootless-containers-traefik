@@ -1,0 +1,4 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>M-S-Software-Engineering-AG/ci-workflows//renovate/image"]
+}
