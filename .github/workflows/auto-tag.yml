@@ -1,0 +1,20 @@
+name: Auto tag
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      breaking:
+        description: Breaking repackaging of the same app version, tag (Y+1).0
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  tag:
+    uses: M-S-Software-Engineering-AG/ci-workflows/.github/workflows/image-auto-tag.yml@main
+    with:
+      breaking: ${{ inputs.breaking || false }}
+    secrets: inherit

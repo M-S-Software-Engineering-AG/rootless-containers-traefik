@@ -620,13 +620,14 @@ CI uses the shared
 | Workflow | Runs | Does |
 | --- | --- | --- |
 | `CI` | pull requests | `go vet`/`go test` (`certwatcher`, `access-log-exporter`) and builds every bake target for every platform, no push |
-| `Release` | push to `main`, or by hand | when anything outside docs and `.github` changed since the last `<version>-Y.Z` tag: picks the next `Y.Z`, builds, Trivy-scans (fails on `HIGH`/`CRITICAL`), pushes, tags the commit `<version>-Y.Z`, moves `<version>-Y`, creates the GitHub release |
+| `Auto tag` | push to `main`, or by hand | when anything outside docs and `.github` changed since the last `<version>-Y.Z` tag: tags the commit with the next `<version>-Y.Z`; after a Renovate merge it waits until no other Renovate PR is pending, so a batch ships as one release |
+| `Release` | push of a `<version>-Y.Z` tag | builds, Trivy-scans (fails on `HIGH`/`CRITICAL`), pushes, moves `<version>-Y`, creates the GitHub release |
 | `Daily scan` | daily 08:00 Europe/Zurich | Trivy-scans the published `latest` and `latest-debug` without rebuilding |
 | `Renovate` | every 2 h | bumps the `# renovate:` pinned versions in `docker-bake.hcl` |
 
 Every change to the image is released and the workflow picks `Y.Z` from the
 git tags: a new `TRAEFIK_VERSION` starts at `1.0`, any other change bumps `Z`.
-For breaking repackaging, run `Release` by hand with `breaking` ticked to get
+For breaking repackaging, run `Auto tag` by hand with `breaking` ticked to get
 `(Y+1).0`. `IMAGE_REVISION` in `docker-bake.hcl` only tags local builds. The workflow aborts on any tag that isn't
 `<version>-Y`, `<version>-Y.Z` (optionally `-debug`) or `latest[-debug]`.
 
