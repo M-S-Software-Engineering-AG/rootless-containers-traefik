@@ -34,7 +34,7 @@ ARG TRAEFIK_VERSION
 ARG SUPERVISOR_VERSION
 ARG HEALTHCHECK_VERSION
 ARG CROWDSEC_PLUGIN_VERSION
-ARG ENVELOPE_VERSION
+ARG ENV2YML_VERSION
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -51,9 +51,9 @@ RUN setcap cap_net_bind_service=+ep traefik
 RUN curl -fsSL -o container-supervisor \
     https://github.com/M-S-Software-Engineering-AG/container-supervisor/releases/download/$SUPERVISOR_VERSION/container-supervisor-linux-$TARGETARCH$TARGETVARIANT \
     && chmod +x container-supervisor
-RUN curl -fsSL -o envelope \
-    https://github.com/M-S-Software-Engineering-AG/envelope/releases/download/$ENVELOPE_VERSION/envelope-linux-$TARGETARCH$TARGETVARIANT \
-    && chmod +x envelope
+RUN curl -fsSL -o env2yml \
+    https://github.com/M-S-Software-Engineering-AG/env2yml/releases/download/$ENV2YML_VERSION/env2yml-linux-$TARGETARCH$TARGETVARIANT \
+    && chmod +x env2yml
 COPY --from=certwatcher /out/certwatcher ./certwatcher
 COPY --from=access-log-exporter /out/access-log-exporter ./access-log-exporter
 ADD --chmod=755 https://github.com/M-S-Software-Engineering-AG/container-healthcheck/releases/download/${HEALTHCHECK_VERSION:?}/container-healthcheck-linux-${TARGETARCH}${TARGETVARIANT} ./healthcheck

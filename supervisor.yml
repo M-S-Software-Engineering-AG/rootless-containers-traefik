@@ -1,6 +1,6 @@
 processes:
   config:
-    path: /home/nonroot/envelope
+    path: /home/nonroot/env2yml
     arguments: ["-prefix", "TRAEFIKCONFIG_", "-out", "/home/nonroot/config/dynamic/config.yml"]
     type: one_shot
     enabled: false
