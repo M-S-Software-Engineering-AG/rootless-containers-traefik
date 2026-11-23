@@ -620,7 +620,7 @@ CI uses the shared
 | Workflow | Runs | Does |
 | --- | --- | --- |
 | `CI` | pull requests | `go vet`/`go test` (`certwatcher`, `access-log-exporter`) and builds every bake target for every platform, no push |
-| `Auto tag` | push to `main`, or by hand | when anything outside docs and `.github` changed since the last `<version>-Y.Z` tag: tags the commit with the next `<version>-Y.Z`; after a Renovate merge it waits until no other Renovate PR is pending, so a batch ships as one release |
+| `Auto tag` | push to `main` by the automation bot (Renovate merges), or by hand | when anything outside docs and `.github` changed since the last `<version>-Y.Z` tag: tags the commit with the next `<version>-Y.Z`; after a Renovate merge it waits until no other Renovate PR is pending, so a batch ships as one release. Your own commits ship with the next one, or right away by running it by hand |
 | `Release` | push of a `<version>-Y.Z` tag | builds, Trivy-scans (fails on `HIGH`/`CRITICAL`), pushes (including the rolling `:<version>-Y` image tag), creates the GitHub release |
 | `Daily scan` | daily 08:00 Europe/Zurich | Trivy-scans the published `latest` and `latest-debug` without rebuilding |
 | `Renovate` | every 2 h | bumps the `# renovate:` pinned versions in `docker-bake.hcl` |
