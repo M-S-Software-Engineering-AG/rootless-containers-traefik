@@ -3,8 +3,12 @@ name: Release
 on:
   push:
     branches: [main]
-    paths: [docker-bake.hcl]
   workflow_dispatch:
+    inputs:
+      breaking:
+        description: Breaking repackaging of the same app version, release (Y+1).0
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -13,4 +17,6 @@ permissions:
 jobs:
   release:
     uses: M-S-Software-Engineering-AG/ci-workflows/.github/workflows/image-release.yml@main
+    with:
+      breaking: ${{ inputs.breaking || false }}
     secrets: inherit

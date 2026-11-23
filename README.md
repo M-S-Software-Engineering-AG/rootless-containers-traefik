@@ -620,12 +620,14 @@ CI uses the shared
 | Workflow | Runs | Does |
 | --- | --- | --- |
 | `CI` | pull requests | `go vet`/`go test` (`certwatcher`, `access-log-exporter`) and builds every bake target for every platform, no push |
-| `Release` | push to `main` touching `docker-bake.hcl`, or by hand | when the `<version>-Y.Z` git tag doesn't exist yet: builds, Trivy-scans (fails on `HIGH`/`CRITICAL`), pushes, tags the commit `<version>-Y.Z`, moves `<version>-Y`, creates the GitHub release |
+| `Release` | push to `main`, or by hand | when anything outside docs and `.github` changed since the last `<version>-Y.Z` tag: picks the next `Y.Z`, builds, Trivy-scans (fails on `HIGH`/`CRITICAL`), pushes, tags the commit `<version>-Y.Z`, moves `<version>-Y`, creates the GitHub release |
 | `Daily scan` | daily 08:00 Europe/Zurich | Trivy-scans the published `latest` and `latest-debug` without rebuilding |
 | `Renovate` | every 2 h | bumps the `# renovate:` pinned versions in `docker-bake.hcl` |
 
-A release is cut by a new `TRAEFIK_VERSION` or a bumped `IMAGE_REVISION`; any
-other change lands in the next one. The workflow aborts on any tag that isn't
+Every change to the image is released and the workflow picks `Y.Z` from the
+git tags: a new `TRAEFIK_VERSION` starts at `1.0`, any other change bumps `Z`.
+For breaking repackaging, run `Release` by hand with `breaking` ticked to get
+`(Y+1).0`. `IMAGE_REVISION` in `docker-bake.hcl` only tags local builds. The workflow aborts on any tag that isn't
 `<version>-Y`, `<version>-Y.Z` (optionally `-debug`) or `latest[-debug]`.
 
 `certwatcher` and `access-log-exporter` are packages of the repo-root `go.mod`
@@ -643,7 +645,7 @@ docker buildx bake
 | `traefik-debug` | `${REGISTRY}/rootless-containers-traefik:${TRAEFIK_VERSION}-${IMAGE_REVISION}-debug`, `:${TRAEFIK_VERSION}-<Y>-debug`, `:latest-debug` | `linux/amd64`, `linux/arm64`, `linux/arm/v7` |
 
 `REGISTRY`, `TRAEFIK_VERSION`, `SUPERVISOR_VERSION`, `CROWDSEC_PLUGIN_VERSION`, `HEALTHCHECK_VERSION`
-and `IMAGE_REVISION` (default `5.2`) are bake variables — override any from the
+and `IMAGE_REVISION` (default `0.0`, set by CI on release) are bake variables — override any from the
 environment (`TRAEFIK_VERSION=v3.7.8 docker buildx bake …`).
 
 The upstream release tarball is named

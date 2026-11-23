@@ -27,8 +27,9 @@ variable "HEALTHCHECK_VERSION" {
   default = "v1.0.0"
 }
 
+# Set by the release workflow from the git tags; this default only tags local builds.
 variable "IMAGE_REVISION" {
-  default = "6.1"
+  default = "0.0"
 }
 
 group "default" {
